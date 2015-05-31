@@ -1,5 +1,6 @@
 package com.example.milaronix.milkeo.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.milaronix.milkeo.PideString;
 import com.example.milaronix.milkeo.R;
 
 import org.apache.http.HttpEntity;
@@ -25,19 +27,30 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Created by milaronix on 7/05/15.
@@ -45,6 +58,16 @@ import java.util.concurrent.ExecutionException;
 public class Boton extends Fragment{
 
     View rootView = null;
+    JSONArray items = null;
+    JSONObject currentValues = null;
+    // JSON Node names
+    private static final String TAG_ITEMS = "items";
+    private static final String TAG_CURRENTVALUE = "currentValue";
+    private static final String TAG_DATA = "data";
+    private static final String TAG_DESCRIPTION = "description";
+    // Hashmap for ListView
+    ArrayList<HashMap<String, String>> devolucion;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,13 +85,13 @@ public class Boton extends Fragment{
                 String respuesta = null;
                 try {
                     respuesta = new conexion_http().execute("high").get();
+                    devolucion = new PideString().execute().get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                EditText respuesta2 = (EditText) rootView.findViewById(R.id.respuesta2);
-                respuesta2.setText(respuesta);
+
 
             }
         });
@@ -77,22 +100,26 @@ public class Boton extends Fragment{
         apagar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Toast para validar en pantalla la accion del boton
-
-
                 String respuesta = null;
                 try {
                     respuesta = new conexion_http().execute("low").get();
+                    devolucion = new PideString().execute().get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                EditText respuesta2 = (EditText) rootView.findViewById(R.id.respuesta2);
-                respuesta2.setText(respuesta);
+
+                for (int i = 0; i < devolucion.size(); i++) {
+                    Log.d("******Devolucion JSON Pin: ", "-"+devolucion.get(i).get("id"));
+                    Log.d("******Devolucion JSON Data: ", "-"+devolucion.get(i).get(TAG_DATA));
+                }
+
             }
         });
 
         return rootView;
+
     }
 
     private class conexion_http extends AsyncTask<String, Void, String>{
@@ -147,6 +174,8 @@ public class Boton extends Fragment{
 
             return resp;
         }
+
+
     }
 
 }

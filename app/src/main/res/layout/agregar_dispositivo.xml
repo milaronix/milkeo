@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imagen_nueva"
+            android:layout_column="0"
+            android:layout_weight="1"
+            android:src="@drawable/lampara"/>
+    </TableRow>
+
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Nombre: "
+            android:id="@+id/etiqueta_nombre"
+            android:layout_weight=".20"
+            android:layout_column="0" />
+
+        <EditText
+            android:id="@+id/ingreso_nombre"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:layout_weight=".80"
+            android:layout_column="1" />
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Pin: "
+            android:id="@+id/etiqueta_pin"
+            android:layout_weight=".20"
+            android:layout_column="0" />
+
+        <EditText
+            android:id="@+id/ingreso_pin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:layout_weight=".80"
+            android:layout_column="1" />
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Descripcion: "
+            android:id="@+id/etiqueta_descripcion"
+            android:layout_weight=".20"
+            android:layout_column="0" />
+
+        <EditText
+            android:id="@+id/ingreso_descripcion"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:layout_weight=".80"
+            android:layout_column="1" />
+    </TableRow>
+</TableLayout>
+
+

@@ -2,6 +2,7 @@ package com.example.milaronix.milkeo.fragments;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.milaronix.milkeo.AgregarDispositivo;
 import com.example.milaronix.milkeo.DetalleDispositivo;
 import com.example.milaronix.milkeo.MainActivity;
 import com.example.milaronix.milkeo.R;
@@ -37,7 +39,7 @@ public class Dispositivos extends Fragment{
         prueba.add("el dos");
         prueba.add("el tres");
 
-        ArrayList<ItemDispositivos> data = new ArrayList<ItemDispositivos>();
+        final ArrayList<ItemDispositivos> data = new ArrayList<ItemDispositivos>();
         data.add(new ItemDispositivos(R.drawable.no_imagen,"uno",R.drawable.apagado));
         data.add(new ItemDispositivos(R.drawable.no_imagen,"dos",R.drawable.apagado));
         data.add(new ItemDispositivos(R.drawable.no_imagen,"tres",R.drawable.apagado));
@@ -48,13 +50,11 @@ public class Dispositivos extends Fragment{
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //String valor = (String) lista.getItemAtPosition(position);
-
-                //Toast.makeText(rootView.getContext(), "presiono: "+position, Toast.LENGTH_SHORT).show();
                 Intent myIntent = new Intent(rootView.getContext(), DetalleDispositivo.class);
-                myIntent.putExtra("posicion",position);
+                myIntent.putExtra("nombre", data.get(position).title);
+                myIntent.putExtra("imagen", data.get(position).icon);
+                myIntent.putExtra("posicion", position);
                 startActivity(myIntent);
-
             }
         });
 
@@ -77,8 +77,8 @@ public class Dispositivos extends Fragment{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.agregar:
-                Toast toast = Toast.makeText(rootView.getContext(), "agregar dispositivo", Toast.LENGTH_SHORT);
-                toast.show();
+                Intent myIntent = new Intent(rootView.getContext(), AgregarDispositivo.class);
+                startActivity(myIntent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
