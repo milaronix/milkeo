@@ -12,6 +12,7 @@ import com.example.milaronix.milkeo.fragments.AcercaDe;
 import com.example.milaronix.milkeo.fragments.Boton;
 import com.example.milaronix.milkeo.fragments.Dispositivos;
 import com.example.milaronix.milkeo.fragments.Alarmas;
+import com.example.milaronix.milkeo.fragments.Erick;
 
 
 public class MainActivity extends ActionBarActivity
@@ -61,6 +62,8 @@ public class MainActivity extends ActionBarActivity
             case 3:
                 fragment = new AcercaDe();
                 break;
+            case 4:
+                fragment = new Erick();
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();

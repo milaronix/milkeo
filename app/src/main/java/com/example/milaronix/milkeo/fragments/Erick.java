@@ -1,7 +1,5 @@
 package com.example.milaronix.milkeo.fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,38 +9,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.milaronix.milkeo.R;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by milaronix on 7/05/15.
+ * Created by milaronix on 27/05/15.
  */
-public class Boton extends Fragment{
+public class Erick extends Fragment {
 
     View rootView = null;
 
@@ -50,9 +38,9 @@ public class Boton extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_boton, container, false);
+        rootView = inflater.inflate(R.layout.fragment_erick, container, false);
 
-        Button encender = (Button) rootView.findViewById(R.id.b_encender);
+        Button encender = (Button) rootView.findViewById(R.id.ar_izq);
         encender.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Toast para validar en pantalla la accion del boton
@@ -67,13 +55,13 @@ public class Boton extends Fragment{
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                EditText respuesta2 = (EditText) rootView.findViewById(R.id.respuesta2);
-                respuesta2.setText(respuesta);
+                //EditText respuesta2 = (EditText) rootView.findViewById(R.id.respuesta2);
+                //respuesta2.setText(respuesta);
 
             }
         });
 
-        Button apagar = (Button) rootView.findViewById(R.id.b_apagar);
+        Button apagar = (Button) rootView.findViewById(R.id.ar_izq);
         apagar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Toast para validar en pantalla la accion del boton
@@ -87,15 +75,15 @@ public class Boton extends Fragment{
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                EditText respuesta2 = (EditText) rootView.findViewById(R.id.respuesta2);
-                respuesta2.setText(respuesta);
+                //EditText respuesta2 = (EditText) rootView.findViewById(R.id.respuesta2);
+                //respuesta2.setText(respuesta);
             }
         });
 
         return rootView;
     }
 
-    private class conexion_http extends AsyncTask<String, Void, String>{
+    private class conexion_http extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... accion) {
@@ -129,8 +117,6 @@ public class Boton extends Fragment{
                 httppost.setEntity(se);
                 HttpResponse httpresponse = httpclient.execute(httppost);
                 HttpEntity resEntity = httpresponse.getEntity();
-                httpclient.getConnectionManager().shutdown();
-                httppost.abort();
 
                 // Pone repuesta en pantalla para verificar
                 resp = EntityUtils.toString(resEntity);
@@ -148,5 +134,4 @@ public class Boton extends Fragment{
             return resp;
         }
     }
-
 }

@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.example.milaronix.milkeo.fragments.Erick">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:text="fragmento de Erick"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Switch"
+        android:id="@+id/switch1"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ar_izq"
+        android:id="@+id/ar_izq"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/switch1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="68dp"
+        android:layout_marginStart="68dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ar_der"
+        android:id="@+id/ar_der"
+        android:layout_alignTop="@+id/ar_izq"
+        android:layout_toRightOf="@+id/ar_izq"
+        android:layout_toEndOf="@+id/ar_izq"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ab_izq"
+        android:id="@+id/ab_izq"
+        android:layout_below="@+id/ar_izq"
+        android:layout_alignLeft="@+id/ar_izq"
+        android:layout_alignStart="@+id/ar_izq"
+        android:layout_marginTop="49dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ab_der"
+        android:id="@+id/ab_der"
+        android:layout_alignTop="@+id/ab_izq"
+        android:layout_alignLeft="@+id/ar_der"
+        android:layout_alignStart="@+id/ar_der" />
+
+</RelativeLayout>
