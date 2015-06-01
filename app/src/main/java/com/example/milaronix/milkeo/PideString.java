@@ -21,7 +21,7 @@ import java.util.HashMap;
 /**
  * Created by milaronix on 31/05/15.
  */
-public class PideString extends AsyncTask<Void, Void, ArrayList<HashMap<String, String>>> {
+public class PideString extends AsyncTask<String, Void, ArrayList<HashMap<String, String>>> {
     JSONArray items = null;
     JSONObject currentValues = null;
     // JSON Node names
@@ -32,10 +32,10 @@ public class PideString extends AsyncTask<Void, Void, ArrayList<HashMap<String, 
     ArrayList<HashMap<String, String>> pafuera = new ArrayList<HashMap<String, String>>();
 
     @Override
-    protected ArrayList<HashMap<String, String>> doInBackground(Void... params) {
+    protected ArrayList<HashMap<String, String>> doInBackground(String... params) {
         //Crea conector http y autorizacion
         HttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("https://devicecloud.digi.com/ws/DataStream/00000000-00000000-00409DFF-FF5E0CE5/DIO.json");
+        HttpGet httpget = new HttpGet("https://devicecloud.digi.com/ws/DataStream/00000000-00000000-00409DFF-FF5E0CE5/DIO"+params[0]+".json");
         String basicAuth = "Basic " + Base64.encodeToString("milaronix:Gatocagado1.".getBytes(), Base64.NO_WRAP);
         httpget.setHeader("Authorization", basicAuth);
 

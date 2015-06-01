@@ -9,10 +9,8 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 
 import com.example.milaronix.milkeo.fragments.AcercaDe;
-import com.example.milaronix.milkeo.fragments.Boton;
 import com.example.milaronix.milkeo.fragments.Dispositivos;
 import com.example.milaronix.milkeo.fragments.Alarmas;
-import com.example.milaronix.milkeo.fragments.Erick;
 
 
 public class MainActivity extends ActionBarActivity
@@ -51,19 +49,14 @@ public class MainActivity extends ActionBarActivity
         switch(position) {
             default:
             case 0:
-                fragment = new Boton();
-                break;
-            case 1:
                 fragment = new Dispositivos();
                 break;
-            case 2:
+            case 1:
                 fragment = new Alarmas();
                 break;
-            case 3:
+            case 2:
                 fragment = new AcercaDe();
                 break;
-            case 4:
-                fragment = new Erick();
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();

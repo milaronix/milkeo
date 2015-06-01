@@ -1,6 +1,7 @@
 package com.example.milaronix.milkeo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -22,6 +23,9 @@ public class AgregarDispositivo extends Activity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Le hizo click a la imagen",Toast.LENGTH_SHORT).show();
+                Intent foto = new Intent(Intent.ACTION_PICK);
+                foto.setType("image/*");
+                startActivityForResult(foto, 100);
             }
         });
     }

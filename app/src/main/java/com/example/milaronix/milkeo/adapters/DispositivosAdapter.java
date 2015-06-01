@@ -33,14 +33,14 @@ public class DispositivosAdapter extends ArrayAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        WeatherHolder holder = null;
+        ItemHolder holder = null;
 
         if(row == null)
         {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            holder = new WeatherHolder();
+            holder = new ItemHolder();
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.estado = (ImageView) row.findViewById(R.id.estado);
@@ -49,18 +49,18 @@ public class DispositivosAdapter extends ArrayAdapter{
         }
         else
         {
-            holder = (WeatherHolder)row.getTag();
+            holder = (ItemHolder)row.getTag();
         }
 
-        ItemDispositivos weather = data.get(position);
-        holder.txtTitle.setText(weather.title);
-        holder.imgIcon.setImageResource(weather.icon);
-        holder.estado.setImageResource(weather.estado);
+        ItemDispositivos item = data.get(position);
+        holder.txtTitle.setText(item.dipositivo.nombre);
+        holder.imgIcon.setImageResource(item.dipositivo.imagen);
+        holder.estado.setImageResource(item.dipositivo.img_estado);
 
         return row;
     }
 
-    static class WeatherHolder
+    static class ItemHolder
     {
         ImageView imgIcon;
         TextView txtTitle;

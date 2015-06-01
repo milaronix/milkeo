@@ -4,17 +4,14 @@ package com.example.milaronix.milkeo;
  * Created by milaronix on 30/05/15.
  */
 public class ItemDispositivos {
-    public int icon;
-    public String title;
-    public int estado;
+    public Dispositivo dipositivo;
+
     public ItemDispositivos(){
         super();
     }
 
-    public ItemDispositivos(int icon, String title, int estado) {
+    public ItemDispositivos(Dispositivo dispositivo) {
         super();
-        this.icon = icon;
-        this.title = title;
-        this.estado = estado;
+        this.dipositivo = dispositivo;
     }
 }

@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,12 +26,20 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by milaronix on 31/05/15.
  */
 public class DetalleDispositivo extends Activity{
     View rootView = null;
+    String nombre = null;
+    String pin = null;
+    String estado = null;
+    int img_estado = 0;
+    int imagen = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,66 +48,68 @@ public class DetalleDispositivo extends Activity{
 
 
         Bundle extras = getIntent().getExtras();
-        String nombret = extras.getString("nombre");
-        int posicion = extras.getInt("posicion");
-        int imagen_e = extras.getInt("imagen");
+        nombre = extras.getString("nombre");
+        pin = extras.getString("pin");
+        estado = extras.getString("estado");
+        img_estado = extras.getInt("img_estado");
+        imagen = extras.getInt("imagen");
 
-        ImageView imagen = (ImageView) findViewById(R.id.imagen);
-        imagen.setImageResource(imagen_e);
+        Log.d("*********PRUEBA string", nombre);
 
-        TextView nombre = (TextView) findViewById(R.id.nombre_l);
-        nombre.setText(nombret+" :"+posicion+" : "+imagen_e);
-    }
+        ImageView imagen_i = (ImageView) findViewById(R.id.imagen);
+        imagen_i.setImageResource(imagen);
 
-    private class conexion_http extends AsyncTask<String, Void, String> {
+        TextView el_nombre = (TextView) findViewById(R.id.el_nombre);
+        TextView el_pin = (TextView) findViewById(R.id.el_pin);
+        el_nombre.setText(nombre);
+        el_pin.setText(pin);
 
-        @Override
-        protected String doInBackground(String... accion) {
-            String resp = null;
+        final EditText miprueba = (EditText) findViewById(R.id.miprueba);
+        final String recibe = "";
 
-            //Crea conector http y autorizacion
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("https://devicecloud.digi.com/ws/sci");
-            String basicAuth = "Basic " + Base64.encodeToString("milaronix:Gatocagado1.".getBytes(), Base64.NO_WRAP);
-            httppost.setHeader("Authorization", basicAuth);
+        final ImageButton boton = (ImageButton) findViewById(R.id.b_estado);
+        boton.setImageResource(img_estado);
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(estado.equals("0")){
+                    try {
+                        String respuesta = new PostRCI().execute("D"+pin,"high").get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
 
-            try {
-                StringEntity se = new StringEntity( "<sci_request version=\"1.0\"> \n" +
-                        "  <send_message cache=\"false\"> \n" +
-                        "    <targets>\n" +
-                        "      <device id=\"00000000-00000000-00409DFF-FF5E0CE5\"/>\n" +
-                        "    </targets> \n" +
-                        "    <rci_request version=\"1.1\"> \n" +
-                        "      <set_setting>\n" +
-                        "        <InputOutput>\n" +
-                        "          <"+accion[0]+">"+accion[1]+"</"+accion[0]+">\n" +
-                        "        </InputOutput>\n" +
-                        "      </set_setting>\n" +
-                        "    </rci_request>\n" +
-                        "  </send_message>\n" +
-                        "</sci_request>", HTTP.UTF_8);
-                se.setContentType("text/xml");
+                }else if(estado.equals("1")){
+                    try {
+                        String respuesta = new PostRCI().execute("D"+pin,"low").get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-                // realiza el POST http
-                httppost.setEntity(se);
-                HttpResponse httpresponse = httpclient.execute(httppost);
-                HttpEntity resEntity = httpresponse.getEntity();
-                httpclient.getConnectionManager().shutdown();
-                httppost.abort();
+                try {
+                    ArrayList<HashMap<String, String>> string_devuelto = new PideString().execute("/"+pin).get();
+                    String estado2 = string_devuelto.get(0).get("data");
+                    estado = estado2;
+                    Log.d("***---***ESTADO2", estado2);
+                    if (estado.equals("0")){
+                        boton.setImageResource(R.drawable.apagado);
+                    }else if (estado.equals("1")){
+                        boton.setImageResource(R.drawable.encendido);
+                    }else{
+                        boton.setImageResource(R.drawable.error_conexion);
+                    }
 
-                // Guarda respuesta
-                resp = EntityUtils.toString(resEntity);
-
-
-            } catch (ClientProtocolException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
-
-            return resp;
-        }
+        });
     }
 }

@@ -1,37 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="0dip" android:layout_gravity="top">
 
-        <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/imagen"
-        android:layout_column="11"
-        android:src="@drawable/casa"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="25dp" />
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp">
+        <ImageView android:id="@+id/imagen"
+            android:src="@drawable/casa"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="0.8"
+            android:layout_gravity="left|center_vertical"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Nombre del dispositivo"
-        android:id="@+id/nombre_l"
-        android:layout_below="@+id/imagen"
-        android:layout_centerHorizontal="true" />
+        <ImageButton android:id="@+id/b_estado"
+            android:src="@drawable/apagado"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.2"/>
+    </TableRow>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
-        android:layout_below="@+id/nombre_l"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/apagado"/>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="15dp">
+        <TextView android:id="@+id/etiqueta_nombre"
+            android:text="Nombre:"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="0.1"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:gravity="left"/>
 
-</RelativeLayout>
+        <TextView android:id="@+id/el_nombre"
+            android:text="prueba"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="0.9"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:background="@android:drawable/editbox_background"
+            android:gravity="left"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="15dp">
+        <TextView android:id="@+id/etiqueta_pin"
+            android:text="Pin:"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="0.1"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:gravity="left"/>
+
+        <TextView android:id="@+id/el_pin"
+            android:text="prueba"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="0.9"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:background="@android:drawable/editbox_background"
+            android:gravity="left"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/miprueba"
+            android:layout_column="0" />
+    </TableRow>
+
+</TableLayout>
