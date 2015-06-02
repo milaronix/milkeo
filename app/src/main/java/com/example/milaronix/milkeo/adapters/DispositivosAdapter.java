@@ -3,6 +3,7 @@ package com.example.milaronix.milkeo.adapters;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.milaronix.milkeo.Dispositivo;
 import com.example.milaronix.milkeo.R;
 import com.example.milaronix.milkeo.ItemDispositivos;
 
@@ -53,9 +55,9 @@ public class DispositivosAdapter extends ArrayAdapter{
         }
 
         ItemDispositivos item = data.get(position);
-        holder.txtTitle.setText(item.dipositivo.nombre);
-        holder.imgIcon.setImageResource(item.dipositivo.imagen);
-        holder.estado.setImageResource(item.dipositivo.img_estado);
+        holder.txtTitle.setText(item.dipositivo.getNombre());
+        holder.imgIcon.setImageResource(Integer.parseInt(item.dipositivo.getImagen()));
+        holder.estado.setImageResource(item.dipositivo.getImg_estado());
 
         return row;
     }

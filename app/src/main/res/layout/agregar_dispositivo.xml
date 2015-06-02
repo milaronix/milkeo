@@ -67,22 +67,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Descripcion: "
-            android:id="@+id/etiqueta_descripcion"
-            android:layout_weight=".20"
-            android:layout_column="0" />
-
-        <EditText
-            android:id="@+id/ingreso_descripcion"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:layout_weight=".80"
-            android:layout_column="1" />
     </TableRow>
     <TableRow>
         <Button

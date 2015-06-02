@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.milaronix.milkeo.AgregarDispositivo;
+import com.example.milaronix.milkeo.ControlBDDispositivos;
 import com.example.milaronix.milkeo.DetalleDispositivo;
 import com.example.milaronix.milkeo.Dispositivo;
 import com.example.milaronix.milkeo.MainActivity;
@@ -29,6 +30,7 @@ import com.example.milaronix.milkeo.ItemDispositivos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class Dispositivos extends Fragment{
@@ -49,6 +51,20 @@ public class Dispositivos extends Fragment{
             e.printStackTrace();
         }
 
+        ControlBDDispositivos bd2 = new ControlBDDispositivos(rootView.getContext());
+        List<Dispositivo> lista2 = bd2.getAllDispositivos();
+
+        for (Dispositivo cn: lista2){
+            Log.d("***Id: ", cn.getId()+"");
+            Log.d("***Nombre: ", cn.getNombre()+"");
+            Log.d("***Estado: ", cn.getEstado()+"");
+            Log.d("***Pin: ", cn.getPin()+"");
+            Log.d("***Imagen: ", cn.getImagen()+"");
+            Log.d("***Imagen Estado: ", cn.getImg_estado()+"");
+        }
+
+
+
         final ArrayList<Dispositivo> items = new ArrayList<Dispositivo>();
         Dispositivo dispositivo = null;
 
@@ -62,30 +78,37 @@ public class Dispositivos extends Fragment{
             }else{
                 img_estado = R.drawable.error_conexion;
             }
-            dispositivo = new Dispositivo(R.drawable.tomacorriente,"Tomacorriente "+(i+1),string_devuelto.get(i).get("id"),estado,img_estado);
+            dispositivo = new Dispositivo(R.drawable.tomacorriente + "","Tomacorriente "+(i+1),string_devuelto.get(i).get("id"),estado,img_estado);
             items.add(dispositivo);
         }
 
         final ArrayList<ItemDispositivos> data = new ArrayList<ItemDispositivos>();
+        //final ArrayList<Dispositivo> data2 = new ArrayList<Dispositivo>();
+
+        ControlBDDispositivos bd = new ControlBDDispositivos(rootView.getContext());
+        //List<Dispositivo> dispositivos = bd.getAllDispositivos();
+        Log.d("********Regreso del Query","");
 
         for (int i = 0; i < items.size(); i++){
             data.add(new ItemDispositivos(items.get(i)));
+           // data2.add(dispositivos.get(i));
 
             //data.add(new ItemDispositivos(items.get(i).imagen,items.get(i).nombre,items.get(i).img_estado));
         }
 
         DispositivosAdapter adapter = new DispositivosAdapter(rootView.getContext(),R.layout.adapter_lista_dispositivos,data);
+        //DispositivosAdapter adapter = new DispositivosAdapter(rootView.getContext(),R.layout.adapter_lista_dispositivos,data2);
         lista.setAdapter(adapter);
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent myIntent = new Intent(rootView.getContext(), DetalleDispositivo.class);
-                myIntent.putExtra("nombre", data.get(position).dipositivo.nombre);
-                myIntent.putExtra("pin", data.get(position).dipositivo.pin);
-                myIntent.putExtra("imagen", data.get(position).dipositivo.imagen);
-                myIntent.putExtra("estado", data.get(position).dipositivo.estado);
-                myIntent.putExtra("img_estado", data.get(position).dipositivo.img_estado);
+                myIntent.putExtra("nombre", data.get(position).dipositivo.getNombre());
+                myIntent.putExtra("pin", data.get(position).dipositivo.getPin());
+                myIntent.putExtra("imagen", data.get(position).dipositivo.getImagen());
+                myIntent.putExtra("estado", data.get(position).dipositivo.getEstado());
+                myIntent.putExtra("img_estado", data.get(position).dipositivo.getImg_estado());
                 startActivity(myIntent);
             }
         });

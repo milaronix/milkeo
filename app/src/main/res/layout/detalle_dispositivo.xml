@@ -75,15 +75,4 @@
             android:gravity="left"/>
     </TableRow>
 
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/miprueba"
-            android:layout_column="0" />
-    </TableRow>
-
 </TableLayout>

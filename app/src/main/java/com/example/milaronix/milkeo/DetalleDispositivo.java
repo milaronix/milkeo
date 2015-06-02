@@ -64,7 +64,6 @@ public class DetalleDispositivo extends Activity{
         el_nombre.setText(nombre);
         el_pin.setText(pin);
 
-        final EditText miprueba = (EditText) findViewById(R.id.miprueba);
         final String recibe = "";
 
         final ImageButton boton = (ImageButton) findViewById(R.id.b_estado);
