@@ -1,10 +1,15 @@
 package com.example.milaronix.milkeo;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -60,7 +65,7 @@ public class SetAlarma extends ActionBarActivity {
         dispositivoAsociado.setAdapter(adp1);
 
         final ArrayList<String> estados = new ArrayList<String>();
-        estados.add("Enceder");
+        estados.add("Encender");
         estados.add("Apagar");
         final Spinner estadoAsociado = (Spinner) findViewById(R.id.estado);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, estados);
@@ -94,6 +99,7 @@ public class SetAlarma extends ActionBarActivity {
                 Dispositivo dispositivo = bd.getDispositivo(a);
                 Toast.makeText(getApplicationContext(),""+dispositivo.getNombre()+a,Toast.LENGTH_SHORT).show();
 
+                Log.d("<*<*<*<*<* Estado Seleccionado: ",estadoAsociado.getSelectedItem().toString());
                 String accion = null;
                 if(estadoAsociado.getSelectedItem().toString().equals("Encender")){
                     accion = "high";
@@ -108,10 +114,12 @@ public class SetAlarma extends ActionBarActivity {
                 futuro.set(Calendar.YEAR, danio);
                 futuro.set(Calendar.HOUR_OF_DAY, dhora);
                 futuro.set(Calendar.MINUTE, dminuto);
+                //actual.set(Calendar.MONTH,actual.get(Calendar.MONTH)+1);
+                Log.d("*****actual:",""+actual.getTime());
+                Log.d("*****futuro:",""+futuro.getTime());
                 Long diferencia =futuro.getTimeInMillis() - actual.getTimeInMillis();
 
-                Alarma alarma = new Alarma();
-                alarma.setAlarma(getApplicationContext(),diferencia,0,dispositivo.getId(),accion);
+                setAlarma(SetAlarma.this,actual.getTimeInMillis()+ diferencia,0,dispositivo.getId(),accion);
             }
         });
     }
@@ -121,7 +129,7 @@ public class SetAlarma extends ActionBarActivity {
         int hour = calendario.get(Calendar.HOUR_OF_DAY);
         int minute =  calendario.get(Calendar.MINUTE);
         int mYear = calendario.get(Calendar.YEAR);
-        int mMonth = calendario.get(Calendar.MONTH);
+        int mMonth = calendario.get(Calendar.MONTH)+1;
         int mDay = calendario.get(Calendar.DAY_OF_MONTH);
         if(fecha){
             boton.setText("" + mDay + "/" + mMonth + "/" + mYear);
@@ -184,9 +192,9 @@ public class SetAlarma extends ActionBarActivity {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
-                        selectedmonth = selectedmonth + 1;
                         ddia = selectedday;
                         dmes = selectedmonth;
+                        selectedmonth = selectedmonth + 1;
                         danio= selectedyear;
                         fecha.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
                     }
@@ -196,6 +204,20 @@ public class SetAlarma extends ActionBarActivity {
             }
         };
         return listenerfecha;
+    }
+
+    private void setAlarma(Context context, Long time, int requestCode, int id, String estado){
+        Intent i = new Intent(context, Alarma.class);
+        i.putExtra("id", id);
+        i.putExtra("estado", estado);
+        AlarmManager am =( AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pi = PendingIntent.getBroadcast(context, requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.set(AlarmManager.RTC_WAKEUP, time, pi);
+
+        Log.d("set Time: ", "" + time);
+        Log.d("set requestcode: ",""+requestCode);
+        Log.d("set id: ",""+id);
+        Log.d("set estado: ",""+estado);
     }
 
     @Override
