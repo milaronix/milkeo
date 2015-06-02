@@ -28,12 +28,20 @@ import java.util.List;
  * Created by milaronix on 2/06/15.
  */
 public class SetAlarma extends ActionBarActivity {
+    int dhora = 0;
+    int dminuto =  0;
+    int danio = 0;
+    int dmes = 0;
+    int ddia = 0;
+    long diferenciaHora = 0;
+    long diferenciaFecha = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_alarma);
+
 
         final List<String> list = new ArrayList<String>();
         final ControlBDDispositivos bd = new ControlBDDispositivos(getApplicationContext());
@@ -51,7 +59,7 @@ public class SetAlarma extends ActionBarActivity {
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dispositivoAsociado.setAdapter(adp1);
 
-        ArrayList<String> estados = new ArrayList<String>();
+        final ArrayList<String> estados = new ArrayList<String>();
         estados.add("Enceder");
         estados.add("Apagar");
         final Spinner estadoAsociado = (Spinner) findViewById(R.id.estado);
@@ -85,6 +93,25 @@ public class SetAlarma extends ActionBarActivity {
                 int a = llave.get(dispositivoAsociado.getSelectedItem().toString());
                 Dispositivo dispositivo = bd.getDispositivo(a);
                 Toast.makeText(getApplicationContext(),""+dispositivo.getNombre()+a,Toast.LENGTH_SHORT).show();
+
+                String accion = null;
+                if(estadoAsociado.getSelectedItem().toString().equals("Encender")){
+                    accion = "high";
+                }else if(estadoAsociado.getSelectedItem().toString().equals("Apagar")){
+                    accion = "low";
+                }
+
+                Calendar actual = Calendar.getInstance();
+                Calendar futuro = Calendar.getInstance();
+                futuro.set(Calendar.DAY_OF_MONTH, ddia);
+                futuro.set(Calendar.MONTH, dmes);
+                futuro.set(Calendar.YEAR, danio);
+                futuro.set(Calendar.HOUR_OF_DAY, dhora);
+                futuro.set(Calendar.MINUTE, dminuto);
+                Long diferencia =futuro.getTimeInMillis() - actual.getTimeInMillis();
+
+                Alarma alarma = new Alarma();
+                alarma.setAlarma(getApplicationContext(),diferencia,0,dispositivo.getId(),accion);
             }
         });
     }
@@ -128,6 +155,8 @@ public class SetAlarma extends ActionBarActivity {
                         } else {
                             AM_PM = "PM";
                         }
+                        dhora = selectedHour;
+                        dminuto = selectedMinute;
                         hora.setText( selectedHour + ":" + selectedMinute + " " + AM_PM);
                     }
                 }, hour, minute, false);//Yes 24 hour time
@@ -156,6 +185,9 @@ public class SetAlarma extends ActionBarActivity {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
                         selectedmonth = selectedmonth + 1;
+                        ddia = selectedday;
+                        dmes = selectedmonth;
+                        danio= selectedyear;
                         fecha.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
                     }
                 }, mYear, mMonth, mDay);
