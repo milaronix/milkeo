@@ -2,6 +2,7 @@ package com.example.milaronix.milkeo.fragments;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 public class Dispositivos extends Fragment{
 
     static View rootView = null;
+    Dispositivo dispositivo = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,52 +65,60 @@ public class Dispositivos extends Fragment{
             Log.d("***Imagen Estado: ", cn.getImg_estado()+"");
         }
 
-
-
-        final ArrayList<Dispositivo> items = new ArrayList<Dispositivo>();
-        Dispositivo dispositivo = null;
-
         for(int i = 0; i < string_devuelto.size(); i++){
             String estado = string_devuelto.get(i).get("data");
-            int img_estado = 0;
-            if (estado.equals("0")){
-                img_estado = R.drawable.apagado;
-            }else if (estado.equals("1")){
-                img_estado = R.drawable.encendido;
-            }else{
-                img_estado = R.drawable.error_conexion;
-            }
-            dispositivo = new Dispositivo(R.drawable.tomacorriente + "","Tomacorriente "+(i+1),string_devuelto.get(i).get("id"),estado,img_estado);
-            items.add(dispositivo);
-        }
+            String pin = string_devuelto.get(i).get("id");
+            for(int cn = 0; cn < lista2.size(); cn++){
+                if(lista2.get(cn).getPin().equals(pin)){
+                    if (estado.equals("0")){
+                        lista2.get(cn).setEstado("0");
+                    }else if (estado.equals("1")){
+                        lista2.get(cn).setEstado("1");
+                    }else{
+                        lista2.get(cn).setEstado("999");
+                    }
+                    Log.d("<*****PINES*****>","P1: "+pin+" P2: "+lista2.get(cn).getPin());
+                    Log.d("<*****ESTADOS*****>","E1: "+estado+" E2: "+lista2.get(cn).getEstado());
+                    bd2.updateDispositivo(lista2.get(cn));
+                }
 
-        final ArrayList<ItemDispositivos> data = new ArrayList<ItemDispositivos>();
-        //final ArrayList<Dispositivo> data2 = new ArrayList<Dispositivo>();
+            }
+        }
+        bd2.close();
+
+        final ArrayList<Dispositivo> data2 = new ArrayList<Dispositivo>();
 
         ControlBDDispositivos bd = new ControlBDDispositivos(rootView.getContext());
-        //List<Dispositivo> dispositivos = bd.getAllDispositivos();
+        List<Dispositivo> dispositivos = bd.getAllDispositivos();
+
+        bd.close();
         Log.d("********Regreso del Query","");
 
-        for (int i = 0; i < items.size(); i++){
-            data.add(new ItemDispositivos(items.get(i)));
-           // data2.add(dispositivos.get(i));
+        for (int i = 0; i < dispositivos.size(); i++){
+            //data.add(new ItemDispositivos(items.get(i)));
+
+            //if(dispositivos.get(i).getId() != 1){
+            //    bd.borrarDispositivo(dispositivos.get(i));
+            //}else {
+                data2.add(dispositivos.get(i));
+            //}
 
             //data.add(new ItemDispositivos(items.get(i).imagen,items.get(i).nombre,items.get(i).img_estado));
         }
 
-        DispositivosAdapter adapter = new DispositivosAdapter(rootView.getContext(),R.layout.adapter_lista_dispositivos,data);
-        //DispositivosAdapter adapter = new DispositivosAdapter(rootView.getContext(),R.layout.adapter_lista_dispositivos,data2);
+        DispositivosAdapter adapter = new DispositivosAdapter(rootView.getContext(),R.layout.adapter_lista_dispositivos,data2);
         lista.setAdapter(adapter);
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent myIntent = new Intent(rootView.getContext(), DetalleDispositivo.class);
-                myIntent.putExtra("nombre", data.get(position).dipositivo.getNombre());
-                myIntent.putExtra("pin", data.get(position).dipositivo.getPin());
-                myIntent.putExtra("imagen", data.get(position).dipositivo.getImagen());
-                myIntent.putExtra("estado", data.get(position).dipositivo.getEstado());
-                myIntent.putExtra("img_estado", data.get(position).dipositivo.getImg_estado());
+                myIntent.putExtra("id", data2.get(position).getId());
+                myIntent.putExtra("nombre", data2.get(position).getNombre());
+                myIntent.putExtra("pin", data2.get(position).getPin());
+                myIntent.putExtra("imagen", data2.get(position).getImagen());
+                myIntent.putExtra("estado", data2.get(position).getEstado());
+                myIntent.putExtra("img_estado", data2.get(position).getImg_estado());
                 startActivity(myIntent);
             }
         });

@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class AgregarDispositivo extends Activity{
     Dispositivo dispositivo = new Dispositivo();
-    int cambio = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +51,11 @@ public class AgregarDispositivo extends Activity{
                 dispositivo.setPin(pin.getText().toString());
                 dispositivo.setEstado("0");
                 dispositivo.setImg_estado(0);
-                if(cambio == 0)
-                    dispositivo.setImagen("vacio");
                 ControlBDDispositivos bd = new ControlBDDispositivos(getApplicationContext());
                 bd.insertarDispositivo(dispositivo);
                 Log.d("------->Paso del Query","<--------");
-                Toast.makeText(getApplicationContext(),"Guardado",Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(),"Guardado",Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -72,7 +70,6 @@ public class AgregarDispositivo extends Activity{
                     Uri imagenSeleccionada = data.getData();
                     foto.setImageURI(imagenSeleccionada);
                     dispositivo.setImagen(imagenSeleccionada.toString());
-                    cambio = 999;
                 }
                 break;
         }

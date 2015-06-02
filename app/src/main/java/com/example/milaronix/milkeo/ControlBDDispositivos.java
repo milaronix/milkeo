@@ -132,7 +132,7 @@ public class ControlBDDispositivos extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    public int updateContact(Dispositivo dispositivo) {
+    public int updateDispositivo(Dispositivo dispositivo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();

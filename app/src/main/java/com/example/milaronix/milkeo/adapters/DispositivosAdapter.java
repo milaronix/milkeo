@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,9 @@ import java.util.ArrayList;
 public class DispositivosAdapter extends ArrayAdapter{
     Context context;
     int layoutResourceId;
-    ArrayList<ItemDispositivos> data = null;
+    ArrayList<Dispositivo> data = null;
 
-    public DispositivosAdapter(Context context, int layoutResourceId, ArrayList<ItemDispositivos> data) {
+    public DispositivosAdapter(Context context, int layoutResourceId, ArrayList<Dispositivo> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -54,10 +55,22 @@ public class DispositivosAdapter extends ArrayAdapter{
             holder = (ItemHolder)row.getTag();
         }
 
-        ItemDispositivos item = data.get(position);
-        holder.txtTitle.setText(item.dipositivo.getNombre());
-        holder.imgIcon.setImageResource(Integer.parseInt(item.dipositivo.getImagen()));
-        holder.estado.setImageResource(item.dipositivo.getImg_estado());
+        Dispositivo item = data.get(position);
+        holder.txtTitle.setText(item.getNombre());
+
+        if(item.getEstado().equals("0")){
+            holder.estado.setImageResource(R.drawable.apagado);
+        }else if(item.getEstado().equals("1")){
+            holder.estado.setImageResource(R.drawable.encendido);
+        }else if(item.getEstado().equals("999")){
+            holder.estado.setImageResource(R.drawable.error_conexion);
+        }
+
+        if(item.getImagen() == null){
+            holder.imgIcon.setImageResource(R.drawable.no_imagen);
+        }else{
+            holder.imgIcon.setImageURI(Uri.parse(item.getImagen()));
+        }
 
         return row;
     }

@@ -1,19 +1,26 @@
 package com.example.milaronix.milkeo;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,13 +40,12 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by milaronix on 31/05/15.
  */
-public class DetalleDispositivo extends Activity{
+public class DetalleDispositivo extends ActionBarActivity{
     View rootView = null;
-    String nombre = null;
-    String pin = null;
-    String estado = null;
-    int img_estado = 0;
-    int imagen = 0;
+    int id = 0;
+    boolean bandera = false;
+    Dispositivo dispositivo = new Dispositivo();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,41 +54,52 @@ public class DetalleDispositivo extends Activity{
 
 
         Bundle extras = getIntent().getExtras();
-        nombre = extras.getString("nombre");
-        pin = extras.getString("pin");
-        estado = extras.getString("estado");
-        img_estado = extras.getInt("img_estado");
-        imagen = extras.getInt("imagen");
+        id = extras.getInt("id");
 
-        Log.d("*********PRUEBA string", nombre);
+        ControlBDDispositivos bd = new ControlBDDispositivos(getApplicationContext());
+        dispositivo = bd.getDispositivo(id);
+        bd.close();
+        Log.d("*********PRUEBA string", dispositivo.getNombre());
 
         ImageView imagen_i = (ImageView) findViewById(R.id.imagen);
-        imagen_i.setImageResource(imagen);
+        if(dispositivo.getImagen() == null){
+            imagen_i.setImageResource(R.drawable.no_imagen);
+        }else{
+            imagen_i.setImageURI(Uri.parse(dispositivo.getImagen()));
+        }
+
+        final ImageButton boton = (ImageButton) findViewById(R.id.b_estado);
+        if(dispositivo.getEstado().equals("0")){
+            boton.setImageResource(R.drawable.apagado);
+        }else if(dispositivo.getEstado().equals("1")){
+            boton.setImageResource(R.drawable.encendido);
+        }else if(dispositivo.getEstado().equals("999")){
+            boton.setImageResource(R.drawable.error_conexion);
+        }
 
         TextView el_nombre = (TextView) findViewById(R.id.el_nombre);
         TextView el_pin = (TextView) findViewById(R.id.el_pin);
-        el_nombre.setText(nombre);
-        el_pin.setText(pin);
+        el_nombre.setText(dispositivo.getNombre());
+        el_pin.setText(dispositivo.getPin());
 
-        final String recibe = "";
-
-        final ImageButton boton = (ImageButton) findViewById(R.id.b_estado);
-        boton.setImageResource(img_estado);
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(estado.equals("0")){
+                ControlBDDispositivos bd = new ControlBDDispositivos(getApplicationContext());
+                if(bandera){dispositivo = bd.getDispositivo(id);}
+
+                if(dispositivo.getEstado().equals("0")){
                     try {
-                        String respuesta = new PostRCI().execute("D"+pin,"high").get();
+                        new PostRCI().execute("D"+dispositivo.getPin(),"high").get();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
 
-                }else if(estado.equals("1")){
+                }else if(dispositivo.getEstado().equals("1")){
                     try {
-                        String respuesta = new PostRCI().execute("D"+pin,"low").get();
+                        new PostRCI().execute("D"+dispositivo.getPin(),"low").get();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
@@ -91,17 +108,19 @@ public class DetalleDispositivo extends Activity{
                 }
 
                 try {
-                    ArrayList<HashMap<String, String>> string_devuelto = new PideString().execute("/"+pin).get();
-                    String estado2 = string_devuelto.get(0).get("data");
-                    estado = estado2;
-                    Log.d("***---***ESTADO2", estado2);
-                    if (estado.equals("0")){
+                    ArrayList<HashMap<String, String>> string_devuelto = new PideString().execute("/"+dispositivo.getPin()).get();
+                    dispositivo.setEstado(string_devuelto.get(0).get("data"));
+                    Log.d("***---***ESTADO2", dispositivo.getEstado());
+                    if (dispositivo.getEstado().equals("0")){
                         boton.setImageResource(R.drawable.apagado);
-                    }else if (estado.equals("1")){
+                    }else if (dispositivo.getEstado().equals("1")){
                         boton.setImageResource(R.drawable.encendido);
                     }else{
                         boton.setImageResource(R.drawable.error_conexion);
                     }
+                    bd.updateDispositivo(dispositivo);
+                    bd.close();
+                    bandera = true;
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -111,4 +130,25 @@ public class DetalleDispositivo extends Activity{
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.detalle_dispositivo, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.eliminar:
+                ControlBDDispositivos bd = new ControlBDDispositivos(getApplicationContext());
+                bd.borrarDispositivo(dispositivo);
+                Toast.makeText(getApplicationContext(), "Eliminado", Toast.LENGTH_SHORT).show();
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
