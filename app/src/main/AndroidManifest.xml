@@ -23,8 +23,14 @@
             android:name=".DetalleDispositivo"
             android:label="@string/app_name" >
         </activity>
+
         <activity
             android:name=".AgregarDispositivo"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity
+            android:name=".SetAlarma"
             android:label="@string/app_name" >
         </activity>
 

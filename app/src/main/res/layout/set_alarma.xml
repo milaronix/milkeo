@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layer">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Dispositivo:"
+        android:id="@+id/etiqueta_dispostivo"
+        android:gravity="center"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dispositivo"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/etiqueta_dispostivo"
+        android:background="@android:drawable/spinner_background"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Estado:"
+        android:id="@+id/etiqueta_estado"
+        android:layout_below="@id/dispositivo"
+        android:gravity="center"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/estado"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/etiqueta_estado"
+        android:background="@android:drawable/spinner_background"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Fecha - Hora del evento:"
+        android:id="@+id/marcatiempo_evento"
+        android:layout_below="@id/estado"
+        android:gravity="center"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/marcatiempo_evento"
+        android:gravity="center"
+        android:background="@android:drawable/edit_text"
+        android:text="desde_fecha"
+        android:id="@+id/fecha" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/marcatiempo_evento"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/fecha"
+        android:gravity="center"
+        android:background="@android:drawable/edit_text"
+        android:text="desde_hora"
+        android:id="@+id/hora"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Cancelar"
+        android:id="@+id/b_cancelar"
+        android:layout_below="@id/fecha" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/b_cancelar"
+        android:gravity="center"
+        android:text="Guardar"
+        android:id="@+id/b_guardar"
+        android:layout_below="@id/fecha" />
+
+</RelativeLayout>

@@ -149,6 +149,4 @@ public class Dispositivos extends Fragment{
         return super.onOptionsItemSelected(item);
     }
 
-
-
 }
